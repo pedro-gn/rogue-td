@@ -1,0 +1,270 @@
+[gd_scene load_steps=16 format=3 uid="uid://56dm0ndk4tc8"]
+
+[ext_resource type="Script" path="res://scenes/barricade/barricade_build_site.gd" id="1_iyypq"]
+[ext_resource type="Texture2D" uid="uid://cl0xv21657cr4" path="res://scenes/tower_build_site/tower_build_site.png" id="2_3p0n8"]
+[ext_resource type="PackedScene" uid="uid://bfu8kocw7pmd8" path="res://scenes/interact_area/interact_area.tscn" id="3_qfky7"]
+[ext_resource type="Theme" uid="uid://ce5wghpko8olj" path="res://rogue_main_theme.tres" id="4_hkl3p"]
+[ext_resource type="Texture2D" uid="uid://cs72hjlkvegm2" path="res://items/gold/gold.png" id="5_mej16"]
+[ext_resource type="Script" path="res://scenes/towers/tower_base.gd" id="6_sbxmx"]
+[ext_resource type="Texture2D" uid="uid://vgf6qkv2xq0p" path="res://common/FX/smoke-Sheet.png" id="7_6nb3k"]
+[ext_resource type="PackedScene" uid="uid://cqnxbwhd0jwgg" path="res://scenes/barricade/barricade.tscn" id="7_o1lmg"]
+[ext_resource type="AudioStream" uid="uid://by1whp6i4fyi8" path="res://scenes/tower_build_site/stone.wav" id="8_catju"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vbrxr"]
+size = Vector2(45, 40)
+
+[sub_resource type="Animation" id="Animation_844sw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TowerBase:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 88)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InteractArea:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("InteractArea:monitorable")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GPUParticles2D:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_j6jkj"]
+resource_name = "spawn"
+length = 2.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TowerBase:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.325, 0.525, 0.725, 0.925, 1.125, 1.325, 1.525, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 88), Vector2(1, 83), Vector2(-1.07018, 71.1754), Vector2(-0.949023, 63.1178), Vector2(-3.84806, 52.4032), Vector2(1.51842, 42.4124), Vector2(-0.681373, 34.8318), Vector2(2.40122, 27.6098), Vector2(3.15282, 21.7536), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InteractArea:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("InteractArea:monitorable")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GPUParticles2D:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8myk3"]
+_data = {
+"RESET": SubResource("Animation_844sw"),
+"spawn": SubResource("Animation_j6jkj")
+}
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7juns"]
+particles_animation = true
+particles_anim_h_frames = 8
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kh2k4"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -1, 0)
+emission_shape = 3
+emission_box_extents = Vector3(25, 1, 1)
+gravity = Vector3(0, -55.27, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 15.24
+tangential_accel_min = -73.17
+tangential_accel_max = 74.39
+scale_min = 0.1
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[node name="BarricadeBuildSite" type="Node2D"]
+script = ExtResource("1_iyypq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0.185617, 0.209761, 1)
+position = Vector2(0, -13)
+texture = ExtResource("2_3p0n8")
+
+[node name="InteractArea" parent="." instance=ExtResource("3_qfky7")]
+position = Vector2(0, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(-0.5, -4)
+shape = SubResource("RectangleShape2D_vbrxr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -17.0
+offset_top = -73.0
+offset_right = 17.935
+offset_bottom = -27.955
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
+custom_minimum_size = Vector2(15.7, 16.91)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("4_hkl3p")
+theme_override_font_sizes/normal_font_size = 14
+text = "30"
+scroll_active = false
+autowrap_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_mej16")
+stretch_mode = 2
+
+[node name="TowerBase" type="Node2D" parent="."]
+z_index = -20
+position = Vector2(0, 88)
+script = ExtResource("6_sbxmx")
+
+[node name="Barricade" parent="TowerBase" instance=ExtResource("7_o1lmg")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8myk3")
+}
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_7juns")
+emitting = false
+amount = 35
+process_material = SubResource("ParticleProcessMaterial_kh2k4")
+texture = ExtResource("7_6nb3k")
+lifetime = 0.4
+speed_scale = 0.7
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(0, -2)
+stream = ExtResource("8_catju")
+volume_db = 2.0
+pitch_scale = 1.13
+bus = &"SFX"
+
+[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="interacted" from="InteractArea" to="." method="_on_interact_area_interacted"]

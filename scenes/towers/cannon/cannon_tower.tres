@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Tower" load_steps=4 format=3 uid="uid://dm1yextvbw1yn"]
+
+[ext_resource type="Script" path="res://resources/towers/tower.gd" id="1_2atvk"]
+[ext_resource type="Resource" uid="uid://dyec56hv0wvl6" path="res://scenes/towers/cannon/cannon_tower_info.tres" id="2_8smfd"]
+[ext_resource type="PackedScene" uid="uid://brugd7e0sivpl" path="res://scenes/towers/cannon/canon.tscn" id="3_abglj"]
+
+[resource]
+script = ExtResource("1_2atvk")
+tower_info = ExtResource("2_8smfd")
+tower_scene = ExtResource("3_abglj")

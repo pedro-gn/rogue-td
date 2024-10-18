@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Projectile" load_steps=4 format=3 uid="uid://83gycqeablqr"]
+
+[ext_resource type="Resource" uid="uid://b5xklg3ak4tv0" path="res://scenes/towers/ballista/projectile/ballista_arrow_damage_stats.tres" id="1_kvgax"]
+[ext_resource type="Script" path="res://resources/projectile.gd" id="1_m6qkj"]
+[ext_resource type="PackedScene" uid="uid://vxbop3tec32x" path="res://scenes/towers/ballista/projectile/ballista_arrow.tscn" id="2_u16j3"]
+
+[resource]
+script = ExtResource("1_m6qkj")
+projectile_fly_speed = 900.0
+projectile_scene = ExtResource("2_u16j3")
+projectile_damage_stats = ExtResource("1_kvgax")

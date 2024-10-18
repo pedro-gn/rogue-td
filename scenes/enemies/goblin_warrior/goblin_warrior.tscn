@@ -1,0 +1,172 @@
+[gd_scene load_steps=17 format=3 uid="uid://d11u86r843ruf"]
+
+[ext_resource type="PackedScene" uid="uid://ctxxlxbxqbfby" path="res://scenes/enemies/enemy_base/enemy_base.tscn" id="1_eoqn5"]
+[ext_resource type="Texture2D" uid="uid://cjfa0nvgnbj5s" path="res://scenes/enemies/goblin_warrior/goblin_warrior-Sheet.png" id="1_sbjll"]
+[ext_resource type="Shader" path="res://shaders/hit_flash.gdshader" id="2_g0ddr"]
+[ext_resource type="Script" path="res://resources/damage_stats.gd" id="3_xldq1"]
+[ext_resource type="Script" path="res://scenes/enemies/goblin_warrior/goblin_warrior_variation.gd" id="5_d8xxj"]
+[ext_resource type="Script" path="res://resources/health_stats.gd" id="12_mlxnv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0valg"]
+resource_local_to_scene = true
+shader = ExtResource("2_g0ddr")
+shader_parameter/active = false
+
+[sub_resource type="Resource" id="Resource_rn5q4"]
+script = ExtResource("3_xldq1")
+base_damage = 20.0
+knockback = Vector2(80, -100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ljdxo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qa0hs"]
+
+[sub_resource type="Resource" id="Resource_0pser"]
+script = ExtResource("12_mlxnv")
+max_health = 100.0
+
+[sub_resource type="Animation" id="Animation_an6pm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpriteFlipper/HitBox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_rwcna"]
+resource_name = "attack"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpriteFlipper/HitBox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.05, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_rxwlq"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_v4r8i"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.142857, 0.285714, 0.428571),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_144v1"]
+_data = {
+"RESET": SubResource("Animation_an6pm"),
+"attack": SubResource("Animation_rwcna"),
+"idle": SubResource("Animation_rxwlq"),
+"walk": SubResource("Animation_v4r8i")
+}
+
+[node name="GoblinWarrior" instance=ExtResource("1_eoqn5")]
+
+[node name="IdleState" parent="StateMachine" index="0" node_paths=PackedStringArray("animation_player")]
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="FollowState" parent="StateMachine" index="1" node_paths=PackedStringArray("animation_player")]
+max_follow_speed = 75.0
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="AttackState" parent="StateMachine" index="2" node_paths=PackedStringArray("animation_player")]
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="DetectionArea" parent="." index="2"]
+visible = false
+
+[node name="CollisionShape2D" parent="DetectionArea" index="0"]
+position = Vector2(0, -14.5)
+
+[node name="Sprite2D" parent="SpriteFlipper" index="0"]
+material = SubResource("ShaderMaterial_0valg")
+texture = ExtResource("1_sbjll")
+hframes = 4
+vframes = 2
+
+[node name="HitBox" parent="SpriteFlipper" index="1"]
+damage_stats = SubResource("Resource_rn5q4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteFlipper/HitBox" index="0"]
+position = Vector2(3, 6)
+shape = SubResource("RectangleShape2D_ljdxo")
+disabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteFlipper/AttackArea" index="0"]
+position = Vector2(3, 6)
+shape = SubResource("RectangleShape2D_qa0hs")
+
+[node name="HealthSystem" parent="SYSTEM_NODES" index="1"]
+health_stats = SubResource("Resource_0pser")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="9"]
+libraries = {
+"": SubResource("AnimationLibrary_144v1")
+}
+
+[node name="WarriorVariation" type="Node2D" parent="." index="10" node_paths=PackedStringArray("attack_area_collision_shape", "hit_box_collision_shape")]
+script = ExtResource("5_d8xxj")
+attack_area_collision_shape = NodePath("../SpriteFlipper/AttackArea/CollisionShape2D")
+hit_box_collision_shape = NodePath("../SpriteFlipper/HitBox/CollisionShape2D")

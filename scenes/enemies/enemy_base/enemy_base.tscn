@@ -1,0 +1,220 @@
+[gd_scene load_steps=29 format=3 uid="uid://ctxxlxbxqbfby"]
+
+[ext_resource type="Script" path="res://scenes/enemies/enemy_base/enemy_base_script.gd" id="1_trxdk"]
+[ext_resource type="Script" path="res://common/state_machine/state_machine.gd" id="2_v51ws"]
+[ext_resource type="Script" path="res://scenes/enemies/enemy_base/states/idle_state.gd" id="3_xu2ad"]
+[ext_resource type="Script" path="res://scenes/enemies/enemy_base/states/follow_state.gd" id="4_otllc"]
+[ext_resource type="Script" path="res://scenes/enemies/enemy_base/states/attack_state.gd" id="5_vfanl"]
+[ext_resource type="Script" path="res://common/state_machine/hit_state.gd" id="6_igpkv"]
+[ext_resource type="Script" path="res://common/sprite_flipper.gd" id="7_jcu2c"]
+[ext_resource type="Script" path="res://common/state_machine/die_state.gd" id="7_yf6pd"]
+[ext_resource type="Shader" path="res://shaders/hit_flash.gdshader" id="8_6bmks"]
+[ext_resource type="Script" path="res://common/hitbox.gd" id="10_hhrm4"]
+[ext_resource type="Script" path="res://common/hurtbox.gd" id="12_hs2rf"]
+[ext_resource type="Script" path="res://common/health_system.gd" id="13_4vg67"]
+[ext_resource type="AudioStream" uid="uid://d4tfs5jotsah" path="res://common/SFX/die.wav" id="13_vm8jh"]
+[ext_resource type="Script" path="res://common/hit_system.gd" id="15_510te"]
+[ext_resource type="PackedScene" uid="uid://d025kx0gsvnbp" path="res://scenes/common/hit_audio_player/hit_audio_player.tscn" id="16_6rjan"]
+[ext_resource type="Script" path="res://common/drop_system.gd" id="16_8rsy8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x47fh"]
+size = Vector2(14, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jlt2l"]
+size = Vector2(388, 61)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m6onl"]
+resource_local_to_scene = true
+shader = ExtResource("8_6bmks")
+shader_parameter/active = false
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_umc4w"]
+size = Vector2(14, 20)
+
+[sub_resource type="Animation" id="Animation_3tke4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_m1il3"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_suqts"]
+_data = {
+"RESET": SubResource("Animation_3tke4"),
+"hit_flash": SubResource("Animation_m1il3")
+}
+
+[sub_resource type="Curve" id="Curve_leymg"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0.00666666, 360), 0.0, 0.0, 0, 0, Vector2(1, -360), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_salhx"]
+curve = SubResource("Curve_leymg")
+
+[sub_resource type="Curve" id="Curve_saivi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_5p1e5"]
+curve = SubResource("Curve_saivi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wpuey"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(5, 5, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 180.0
+flatness = 0.315
+initial_velocity_max = 60.86
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("CurveTexture_salhx")
+gravity = Vector3(0, 0, 0)
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_5p1e5")
+
+[node name="EnemyBase" type="CharacterBody2D" node_paths=PackedStringArray("hurtbox", "health_system", "hit_system", "state_machine", "drop_system")]
+z_index = 5
+collision_layer = 32
+script = ExtResource("1_trxdk")
+hurtbox = NodePath("HurtBox")
+health_system = NodePath("SYSTEM_NODES/HealthSystem")
+hit_system = NodePath("SYSTEM_NODES/HitSystem")
+state_machine = NodePath("StateMachine")
+drop_system = NodePath("SYSTEM_NODES/DropSystem")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_x47fh")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_v51ws")
+initial_state = NodePath("IdleState")
+
+[node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("detection_area", "attack_area")]
+script = ExtResource("3_xu2ad")
+stop_speed = 2.0
+detection_area = NodePath("../../DetectionArea")
+attack_area = NodePath("../../SpriteFlipper/AttackArea")
+
+[node name="FollowState" type="Node" parent="StateMachine" node_paths=PackedStringArray("detection_area", "attack_area")]
+script = ExtResource("4_otllc")
+max_follow_speed = 60.0
+detection_area = NodePath("../../DetectionArea")
+attack_area = NodePath("../../SpriteFlipper/AttackArea")
+
+[node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_timer", "attack_area")]
+script = ExtResource("5_vfanl")
+attack_timer = NodePath("AttackTimer")
+attack_area = NodePath("../../SpriteFlipper/AttackArea")
+
+[node name="AttackTimer" type="Timer" parent="StateMachine/AttackState"]
+one_shot = true
+
+[node name="HitState" type="Node" parent="StateMachine" node_paths=PackedStringArray("default_state")]
+script = ExtResource("6_igpkv")
+stop_speed = 2.0
+default_state = NodePath("../IdleState")
+
+[node name="DieState" type="Node" parent="StateMachine" node_paths=PackedStringArray("die_audio_player", "hurt_box", "hit_box", "die_particles")]
+script = ExtResource("7_yf6pd")
+die_audio_player = NodePath("../../AUDIO_NODES/DieAudioPlayer")
+hurt_box = NodePath("../../HurtBox")
+hit_box = NodePath("../../SpriteFlipper/HitBox")
+die_particles = NodePath("../../DieParticles2D")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1536
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("RectangleShape2D_jlt2l")
+
+[node name="SpriteFlipper" type="Marker2D" parent="." node_paths=PackedStringArray("character_body")]
+script = ExtResource("7_jcu2c")
+character_body = NodePath("..")
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteFlipper"]
+material = SubResource("ShaderMaterial_m6onl")
+
+[node name="HitBox" type="Area2D" parent="SpriteFlipper"]
+collision_layer = 64
+collision_mask = 1536
+script = ExtResource("10_hhrm4")
+
+[node name="AttackArea" type="Area2D" parent="SpriteFlipper"]
+collision_layer = 0
+collision_mask = 20
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 256
+script = ExtResource("12_hs2rf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_umc4w")
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_suqts")
+}
+
+[node name="AUDIO_NODES" type="Node2D" parent="."]
+
+[node name="DieAudioPlayer" type="AudioStreamPlayer2D" parent="AUDIO_NODES"]
+stream = ExtResource("13_vm8jh")
+bus = &"SFX"
+
+[node name="HitAudioPlayer" parent="AUDIO_NODES" instance=ExtResource("16_6rjan")]
+
+[node name="SYSTEM_NODES" type="Node" parent="."]
+
+[node name="HitSystem" type="Node" parent="SYSTEM_NODES" node_paths=PackedStringArray("hit_flash_animation_player", "hit_audio_stream_player")]
+script = ExtResource("15_510te")
+hit_flash_animation_player = NodePath("../../HitFlashAnimationPlayer")
+hit_audio_stream_player = NodePath("../../AUDIO_NODES/HitAudioPlayer")
+
+[node name="HealthSystem" type="Node" parent="SYSTEM_NODES"]
+script = ExtResource("13_4vg67")
+
+[node name="DropSystem" type="Node" parent="SYSTEM_NODES"]
+script = ExtResource("16_8rsy8")
+gold_amount = 3
+
+[node name="DieParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, 7)
+emitting = false
+amount = 26
+process_material = SubResource("ParticleProcessMaterial_wpuey")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+
+[connection signal="timeout" from="StateMachine/AttackState/AttackTimer" to="StateMachine/AttackState" method="_on_attack_timer_timeout"]

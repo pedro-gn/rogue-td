@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3 uid="uid://cc7fvt52vsy84"]
+
+[ext_resource type="Texture2D" uid="uid://dvmaofegcx76g" path="res://scenes/castle_tower/ui/ui_tower_buy_frame/towers_frame.png" id="1_pd312"]
+[ext_resource type="Script" path="res://scenes/castle_tower/ui/ui_tower_buy_frame/tower_buy_frame.gd" id="2_o7gdb"]
+[ext_resource type="Texture2D" uid="uid://btoppjptwynag" path="res://scenes/castle_tower/ui/ui_tower_buy_frame/towers_frame_hover.png" id="3_ftfcg"]
+[ext_resource type="Theme" uid="uid://ce5wghpko8olj" path="res://rogue_main_theme.tres" id="3_xew4t"]
+[ext_resource type="Texture2D" uid="uid://cs72hjlkvegm2" path="res://items/gold/gold.png" id="4_2bnff"]
+
+[node name="TextureRect" type="TextureRect" node_paths=PackedStringArray("texture_rect", "price_label")]
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("1_pd312")
+script = ExtResource("2_o7gdb")
+normal_texture = ExtResource("1_pd312")
+hover_texture = ExtResource("3_ftfcg")
+texture_rect = NodePath("VBoxContainer/TowerThumbContainer/TextureRect")
+price_label = NodePath("VBoxContainer/TowerBuyContainer/HBoxContainer/PriceLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TowerThumbContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = -5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TowerThumbContainer"]
+layout_mode = 2
+stretch_mode = 3
+
+[node name="TowerBuyContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TowerBuyContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PriceLabel" type="RichTextLabel" parent="VBoxContainer/TowerBuyContainer/HBoxContainer"]
+custom_minimum_size = Vector2(26, 15.12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme = ExtResource("3_xew4t")
+theme_override_font_sizes/normal_font_size = 11
+text = "9999"
+scroll_active = false
+autowrap_mode = 0
+text_direction = 2
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/TowerBuyContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 14.855)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("4_2bnff")
+stretch_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

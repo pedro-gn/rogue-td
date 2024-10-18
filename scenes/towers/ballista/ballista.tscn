@@ -1,0 +1,157 @@
+[gd_scene load_steps=9 format=3 uid="uid://me5uqg2wrp8v"]
+
+[ext_resource type="Script" path="res://scenes/towers/ballista/ballista.gd" id="1_vos3b"]
+[ext_resource type="Resource" uid="uid://jmjlwd34q41w" path="res://scenes/towers/ballista/ballista_tower_info.tres" id="2_p5sxs"]
+[ext_resource type="Texture2D" uid="uid://bf3rl1jmj3bv1" path="res://scenes/towers/ballista/ballista-Sheet.png" id="3_tij04"]
+[ext_resource type="Script" path="res://scenes/towers/targeting_area.gd" id="7_ttcc5"]
+
+[sub_resource type="Animation" id="Animation_bto03"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flipper/Base:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flipper/TopPivot/Top:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Flipper/TopPivot/Top/Roller:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+
+[sub_resource type="Animation" id="Animation_lciik"]
+resource_name = "shoot"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flipper/Base:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flipper/TopPivot/Top:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Flipper/TopPivot/Top/Roller:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 6]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"shoot"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o7b0m"]
+_data = {
+"RESET": SubResource("Animation_bto03"),
+"shoot": SubResource("Animation_lciik")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_adrut"]
+size = Vector2(303, 230)
+
+[node name="Ballista" type="Node2D"]
+script = ExtResource("1_vos3b")
+tower_info_res = ExtResource("2_p5sxs")
+
+[node name="Flipper" type="Marker2D" parent="."]
+
+[node name="Base" type="Sprite2D" parent="Flipper"]
+position = Vector2(-1, -23)
+texture = ExtResource("3_tij04")
+hframes = 3
+vframes = 3
+
+[node name="TopPivot" type="Node2D" parent="Flipper"]
+position = Vector2(1, -14)
+
+[node name="Top" type="Sprite2D" parent="Flipper/TopPivot"]
+position = Vector2(-2, -10)
+texture = ExtResource("3_tij04")
+hframes = 3
+vframes = 3
+frame = 3
+
+[node name="Roller" type="Sprite2D" parent="Flipper/TopPivot/Top"]
+texture = ExtResource("3_tij04")
+hframes = 3
+vframes = 3
+frame = 6
+
+[node name="ShootPoint" type="Marker2D" parent="Flipper/TopPivot"]
+position = Vector2(34, -7)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_o7b0m")
+}
+
+[node name="TargetsArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+script = ExtResource("7_ttcc5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetsArea"]
+position = Vector2(191.5, 0)
+shape = SubResource("RectangleShape2D_adrut")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="TargetsArea"]
+position = Vector2(-191, 0)
+shape = SubResource("RectangleShape2D_adrut")

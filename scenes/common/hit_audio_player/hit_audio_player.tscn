@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://d025kx0gsvnbp"]
+
+[ext_resource type="AudioStream" uid="uid://cuej8b3g5q3hp" path="res://common/SFX/hit.wav" id="1_2pvmt"]
+[ext_resource type="Script" path="res://scenes/common/hit_audio_player/hit_audio_player.gd" id="2_ddjde"]
+
+[node name="HitAudioPlayer" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_2pvmt")
+volume_db = -7.0
+max_polyphony = 2
+bus = &"SFX"
+script = ExtResource("2_ddjde")

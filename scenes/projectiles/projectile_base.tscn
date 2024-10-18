@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctn3sbjt4k6j3"]
+
+[sub_resource type="GDScript" id="GDScript_ps467"]
+script/source = "extends RigidBody2D
+
+@export var fly_speed : float
+@export var projectile_scene : PackedScene
+
+func shoot(direction : Vector2):
+	apply_impulse(direction * fly_speed)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3adbq"]
+size = Vector2(18, 16)
+
+[node name="ProjectileBase" type="RigidBody2D"]
+collision_layer = 256
+contact_monitor = true
+max_contacts_reported = 1
+script = SubResource("GDScript_ps467")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3adbq")
+
+[node name="LifeTimeTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="LifeTimeTimer" to="." method="_on_life_time_timer_timeout"]

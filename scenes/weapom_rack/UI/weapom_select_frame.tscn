@@ -1,0 +1,69 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwucensj0l3ik"]
+
+[ext_resource type="Texture2D" uid="uid://cfc20vkttygku" path="res://common/UI/weapom_frame.png" id="1_m4cw2"]
+[ext_resource type="Script" path="res://scenes/weapom_rack/UI/weapom_select_frame.gd" id="2_5rnto"]
+[ext_resource type="Texture2D" uid="uid://d2uevquos2lm2" path="res://common/UI/weapom_frame_hover.png" id="3_8foec"]
+[ext_resource type="Texture2D" uid="uid://dxsh5ectk76ba" path="res://scenes/weapons/melee/axe/axe.png" id="4_ra3at"]
+[ext_resource type="Theme" uid="uid://ce5wghpko8olj" path="res://rogue_main_theme.tres" id="5_sqm1l"]
+
+[node name="WeapomSelectFrame" type="TextureRect" node_paths=PackedStringArray("texture_rect")]
+offset_right = 42.0
+offset_bottom = 57.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("1_m4cw2")
+script = ExtResource("2_5rnto")
+normal_texture = ExtResource("1_m4cw2")
+mouse_hover_texture = ExtResource("3_8foec")
+texture_rect = NodePath("VBoxContainer/MarginContainer/TextureRect")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 38.995)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("4_ra3at")
+stretch_mode = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 17.81)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/margin_left = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/MarginContainer2/CenterContainer/HBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(32.385, 10.115)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme = ExtResource("5_sqm1l")
+theme_override_font_sizes/normal_font_size = 10
+text = "Select"
+scroll_active = false
+autowrap_mode = 1
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

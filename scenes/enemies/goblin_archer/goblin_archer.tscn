@@ -1,0 +1,169 @@
+[gd_scene load_steps=17 format=3 uid="uid://cuyy7h3fkd08a"]
+
+[ext_resource type="PackedScene" uid="uid://ctxxlxbxqbfby" path="res://scenes/enemies/enemy_base/enemy_base.tscn" id="1_rwxmi"]
+[ext_resource type="Script" path="res://scenes/enemies/goblin_archer/archer_variation.gd" id="2_h8i7l"]
+[ext_resource type="Texture2D" uid="uid://drngefb6m7vso" path="res://scenes/enemies/goblin_archer/goblin_archer-Sheet.png" id="2_ircun"]
+[ext_resource type="Script" path="res://scenes/enemies/goblin_archer/attack_state.gd" id="2_y2ayy"]
+[ext_resource type="PackedScene" uid="uid://bemtp2nurafy0" path="res://scenes/enemies/goblin_archer/projectile/arrow.tscn" id="3_elg21"]
+[ext_resource type="Shader" path="res://shaders/hit_flash.gdshader" id="5_inbmo"]
+[ext_resource type="Script" path="res://resources/health_stats.gd" id="5_ornkp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bup21"]
+resource_local_to_scene = true
+shader = ExtResource("5_inbmo")
+shader_parameter/active = false
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2pq70"]
+resource_local_to_scene = true
+size = Vector2(145, 41)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1lilf"]
+size = Vector2(20, 41)
+
+[sub_resource type="Resource" id="Resource_mok6e"]
+script = ExtResource("5_ornkp")
+max_health = 100.0
+
+[sub_resource type="Animation" id="Animation_4qtep"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_in3b7"]
+resource_name = "attack"
+length = 0.4
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [4, 5, 0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StateMachine/AttackState")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.142857),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"spawn_arrow"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_1eekt"]
+resource_name = "idle"
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_d0iji"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.142857, 0.285714, 0.428571),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_44ylc"]
+_data = {
+"RESET": SubResource("Animation_4qtep"),
+"attack": SubResource("Animation_in3b7"),
+"idle": SubResource("Animation_1eekt"),
+"walk": SubResource("Animation_d0iji")
+}
+
+[node name="GoblinArcher" instance=ExtResource("1_rwxmi")]
+
+[node name="ArcherVariation" type="Node2D" parent="." index="0" node_paths=PackedStringArray("shape_cast", "collision_shape_2d")]
+script = ExtResource("2_h8i7l")
+shape_cast = NodePath("../SpriteFlipper/ShapeCast2D")
+collision_shape_2d = NodePath("../SpriteFlipper/AttackArea/CollisionShape2D")
+
+[node name="IdleState" parent="StateMachine" index="0" node_paths=PackedStringArray("animation_player")]
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="FollowState" parent="StateMachine" index="1" node_paths=PackedStringArray("animation_player")]
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="AttackState" parent="StateMachine" index="2" node_paths=PackedStringArray("shoot_point", "animation_player")]
+script = ExtResource("2_y2ayy")
+projectile_scene = ExtResource("3_elg21")
+projectile_fly_speed = 400.0
+shoot_point = NodePath("../../SpriteFlipper/AttackPoint")
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="CollisionShape2D" parent="DetectionArea" index="0"]
+visible = false
+debug_color = Color(0, 0.6, 0.701961, 0.0313726)
+
+[node name="Sprite2D" parent="SpriteFlipper" index="0"]
+material = SubResource("ShaderMaterial_bup21")
+texture = ExtResource("2_ircun")
+hframes = 4
+vframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteFlipper/AttackArea" index="0"]
+position = Vector2(71.75, 0)
+shape = SubResource("RectangleShape2D_2pq70")
+debug_color = Color(0.962709, 0.0881406, 0.436774, 0.42)
+
+[node name="AttackPoint" type="Marker2D" parent="SpriteFlipper" index="3"]
+position = Vector2(12, 7)
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="SpriteFlipper" index="4"]
+position = Vector2(9.705, 0)
+shape = SubResource("RectangleShape2D_1lilf")
+target_position = Vector2(126, 0)
+max_results = 1
+collision_mask = 20
+
+[node name="HitAudioPlayer" parent="AUDIO_NODES" index="1"]
+position = Vector2(6, 0)
+
+[node name="HealthSystem" parent="SYSTEM_NODES" index="1"]
+health_stats = SubResource("Resource_mok6e")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="10"]
+libraries = {
+"": SubResource("AnimationLibrary_44ylc")
+}

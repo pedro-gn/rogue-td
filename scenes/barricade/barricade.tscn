@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://cqnxbwhd0jwgg"]
+
+[ext_resource type="Script" path="res://scenes/barricade/barricade.gd" id="1_4cxyg"]
+[ext_resource type="Script" path="res://common/hurtbox.gd" id="2_wmem3"]
+[ext_resource type="Texture2D" uid="uid://b1jk2apfidly1" path="res://scenes/barricade/barricada.png" id="3_x8sal"]
+[ext_resource type="Script" path="res://common/health_system.gd" id="4_ormqr"]
+[ext_resource type="Script" path="res://resources/health_stats.gd" id="5_hf3xb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nu0gj"]
+size = Vector2(46, 61)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0yrjp"]
+size = Vector2(46, 61)
+
+[sub_resource type="Resource" id="Resource_otc6i"]
+script = ExtResource("5_hf3xb")
+max_health = 1000.0
+
+[node name="Barricade" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_4cxyg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -30.5)
+shape = SubResource("RectangleShape2D_nu0gj")
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 128
+script = ExtResource("2_wmem3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, -30.5)
+shape = SubResource("RectangleShape2D_0yrjp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -45)
+texture = ExtResource("3_x8sal")
+
+[node name="HealthSystem" type="Node" parent="."]
+script = ExtResource("4_ormqr")
+health_stats = SubResource("Resource_otc6i")

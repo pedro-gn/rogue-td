@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cty50hxxwyol6"]
+
+[ext_resource type="Script" path="res://scenes/globals/PlayerInventoryManager/player_inventory_manager.gd" id="1_omvkh"]
+[ext_resource type="AudioStream" uid="uid://c1pg5u6ijb77f" path="res://common/SFX/gold.wav" id="2_j5s0s"]
+
+[node name="PlayerInventoryManager" type="Node2D"]
+script = ExtResource("1_omvkh")
+
+[node name="GoldSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_j5s0s")
+bus = &"SFX"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_j5s0s")
+volume_db = -12.0
+bus = &"SFX"

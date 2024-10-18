@@ -1,0 +1,242 @@
+[gd_scene load_steps=17 format=3 uid="uid://1odlfw0qpugf"]
+
+[ext_resource type="Script" path="res://scenes/castle_tower/castle_tower.gd" id="1_mcg0r"]
+[ext_resource type="Texture2D" uid="uid://uxrkksj7psqm" path="res://scenes/castle_tower/ui/tower_sell_button.png" id="2_oueqe"]
+[ext_resource type="Theme" uid="uid://ce5wghpko8olj" path="res://rogue_main_theme.tres" id="3_lmxxi"]
+[ext_resource type="Texture2D" uid="uid://bqcaa72m2lqt5" path="res://scenes/castle_tower/ui/towe_slot.png" id="3_ra553"]
+[ext_resource type="Texture2D" uid="uid://6qvl3gjoud1b" path="res://scenes/castle_tower/ui/tower_sell_button_hover.png" id="3_st1qd"]
+[ext_resource type="Texture2D" uid="uid://coue5r8d7pjp7" path="res://scenes/castle_tower/ui/red_tower_sell_button.png" id="3_yy3qn"]
+[ext_resource type="Texture2D" uid="uid://i4sta28iyin5" path="res://scenes/castle_tower/tower_sell_button.png" id="4_45obt"]
+[ext_resource type="Texture2D" uid="uid://cy3ibpwkyv2va" path="res://scenes/castle_tower/ui/red_tower_sell_button_hover.png" id="4_emvcj"]
+[ext_resource type="Texture2D" uid="uid://bfcsow2lecoj3" path="res://scenes/castle_tower/tower_sell_button_hover.png" id="5_hmt4f"]
+[ext_resource type="Texture2D" uid="uid://car5qbx1vwwwl" path="res://scenes/castle_tower/castle_tower-Sheet.png" id="6_n0rhk"]
+[ext_resource type="Texture2D" uid="uid://cpwgrvlxyaynk" path="res://scenes/castle_tower/frame.png" id="7_bes6c"]
+[ext_resource type="PackedScene" uid="uid://bfu8kocw7pmd8" path="res://scenes/interact_area/interact_area.tscn" id="9_6fehf"]
+[ext_resource type="Texture2D" uid="uid://cs72hjlkvegm2" path="res://items/gold/gold.png" id="11_p36x0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1nwwh"]
+texture = ExtResource("3_ra553")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4kogc"]
+texture = ExtResource("7_bes6c")
+texture_margin_left = 25.0
+texture_margin_top = 25.0
+texture_margin_right = 25.0
+texture_margin_bottom = 25.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v0poe"]
+size = Vector2(34.5, 69.5)
+
+[node name="CastleTower" type="Node2D"]
+script = ExtResource("1_mcg0r")
+empty_sell_button = ExtResource("2_oueqe")
+empty_sell_button_hover = ExtResource("3_st1qd")
+red_sell_button = ExtResource("3_yy3qn")
+red_sell_button_hover = ExtResource("4_emvcj")
+
+[node name="Slot2Marker" type="Marker2D" parent="."]
+position = Vector2(0, -83)
+
+[node name="Top" type="Sprite2D" parent="."]
+position = Vector2(0, -59)
+texture = ExtResource("6_n0rhk")
+vframes = 2
+
+[node name="Slot1Marker" type="Marker2D" parent="."]
+position = Vector2(0, -63)
+
+[node name="Base" type="Sprite2D" parent="."]
+position = Vector2(0, -59)
+texture = ExtResource("6_n0rhk")
+vframes = 2
+frame = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="TowerMenu" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/TowerMenu"]
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/TowerMenu/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 110
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TowerSlot1" type="VBoxContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1"]
+custom_minimum_size = Vector2(88, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_1nwwh")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_right = 13
+theme_override_constants/margin_bottom = -5
+
+[node name="Slot1TowerTexture" type="TextureRect" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1/PanelContainer2/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 3
+
+[node name="Slot1SellButton" type="TextureButton" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("4_45obt")
+texture_hover = ExtResource("5_hmt4f")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1/Slot1SellButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1/Slot1SellButton/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1/Slot1SellButton/MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Slot1ButtonTextLabel" type="RichTextLabel" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1/Slot1SellButton/MarginContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(26.79, 15.67)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+theme = ExtResource("3_lmxxi")
+theme_override_font_sizes/normal_font_size = 11
+text = "SELL  100"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Slot1SellButtonIcon" type="TextureRect" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1/Slot1SellButton/MarginContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(9.93, 9.58)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("11_p36x0")
+expand_mode = 2
+
+[node name="TowerSlot2" type="VBoxContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2"]
+custom_minimum_size = Vector2(88, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_1nwwh")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_right = 13
+theme_override_constants/margin_bottom = -5
+
+[node name="Slot2TowerTexture" type="TextureRect" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2/PanelContainer2/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 3
+
+[node name="SellButton2" type="TextureButton" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("4_45obt")
+texture_hover = ExtResource("5_hmt4f")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2/SellButton2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2/SellButton2/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2/SellButton2/MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Slot2ButtonTextLabel" type="RichTextLabel" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2/SellButton2/MarginContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(26.79, 15.67)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+theme = ExtResource("3_lmxxi")
+theme_override_font_sizes/normal_font_size = 11
+text = "SELL  100"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Slot2SellButtonIcon" type="TextureRect" parent="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2/SellButton2/MarginContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(9.93, 9.58)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("11_p36x0")
+expand_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/TowerMenu/HBoxContainer"]
+custom_minimum_size = Vector2(326.29, 181)
+layout_mode = 2
+theme = ExtResource("3_lmxxi")
+theme_override_styles/panel = SubResource("StyleBoxTexture_4kogc")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(320.13, 168)
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/TowerMenu/HBoxContainer/PanelContainer/ScrollContainer"]
+layout_mode = 2
+columns = 4
+
+[node name="InteractArea" parent="." instance=ExtResource("9_6fehf")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0.25, -34.75)
+shape = SubResource("RectangleShape2D_v0poe")
+
+[connection signal="pressed" from="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot1/Slot1SellButton" to="." method="_on_sell_button_1_pressed"]
+[connection signal="pressed" from="CanvasLayer/TowerMenu/HBoxContainer/MarginContainer/VBoxContainer2/TowerSlot2/SellButton2" to="." method="_on_sell_button_2_pressed"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="interacted" from="InteractArea" to="." method="_on_interact_area_interacted"]

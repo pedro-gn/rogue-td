@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://cmvex6q0fmjec"]
+
+[ext_resource type="Script" path="res://scenes/common/abstract_item/abstract_item.gd" id="1_j5xmu"]
+[ext_resource type="Shader" path="res://shaders/item_highlight.gdshader" id="2_xdlob"]
+[ext_resource type="Texture2D" uid="uid://cs72hjlkvegm2" path="res://items/gold/gold.png" id="3_vhnen"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bir8p"]
+friction = 0.5
+bounce = 0.5
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a0ngy"]
+radius = 8.0
+height = 16.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e4fw5"]
+resource_local_to_scene = true
+shader = ExtResource("2_xdlob")
+shader_parameter/highlight_color = Color(1, 1, 1, 1)
+shader_parameter/frequency = 0.5
+shader_parameter/highlight_speed = 6.0
+shader_parameter/highlight_width = 15.0
+
+[node name="AbstractItem" type="RigidBody2D" node_paths=PackedStringArray("sprite_2d")]
+position = Vector2(0, -1)
+collision_layer = 8
+physics_material_override = SubResource("PhysicsMaterial_bir8p")
+lock_rotation = true
+script = ExtResource("1_j5xmu")
+sprite_2d = NodePath("Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_a0ngy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_e4fw5")
+texture = ExtResource("3_vhnen")

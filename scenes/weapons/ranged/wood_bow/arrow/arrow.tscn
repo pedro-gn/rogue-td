@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://dg4gokswpu36"]
+
+[ext_resource type="Texture2D" uid="uid://cuxvdwndmaq7k" path="res://scenes/weapons/ranged/wood_bow/arrow/arrow.png" id="2_npkx8"]
+[ext_resource type="Script" path="res://scenes/weapons/ranged/wood_bow/arrow/arrow.gd" id="2_radgi"]
+[ext_resource type="Script" path="res://common/hitbox.gd" id="3_ihaob"]
+[ext_resource type="Resource" uid="uid://dmx8uxygp8k2t" path="res://scenes/weapons/ranged/wood_bow/arrow/arrow_damage_stats.tres" id="4_68ayv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6lhbg"]
+size = Vector2(18, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sefvh"]
+size = Vector2(18, 5)
+
+[node name="Arrow" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("2_radgi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_6lhbg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_npkx8")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 256
+collision_mask = 128
+script = ExtResource("3_ihaob")
+damage_stats = ExtResource("4_68ayv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_sefvh")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(25, 0)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://d0scplcffyg4s"]
+
+[ext_resource type="Script" path="res://scenes/weapons/melee/axe/axe.gd" id="1_m65v4"]
+[ext_resource type="Texture2D" uid="uid://dxsh5ectk76ba" path="res://scenes/weapons/melee/axe/axe.png" id="2_ghxie"]
+[ext_resource type="AudioStream" uid="uid://boalnm585vyx0" path="res://scenes/weapons/melee/swing-whoosh-weapon-4-189820.mp3" id="3_pueuq"]
+[ext_resource type="Script" path="res://common/hitbox.gd" id="4_yyv0j"]
+[ext_resource type="Resource" uid="uid://cskv65qubgxcx" path="res://scenes/weapons/melee/axe/axe_damage_stats.tres" id="5_qa3w0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7068w"]
+size = Vector2(14, 28)
+
+[node name="Axe" type="Node2D" node_paths=PackedStringArray("hit_box", "weapom_sprite", "weapon_sound_stream")]
+script = ExtResource("1_m65v4")
+hit_box = NodePath("HitBox")
+weapom_name = "axe"
+weapom_sprite = NodePath("Sprite2D")
+weapon_sound_stream = NodePath("AudioStreamPlayer2D")
+attack_speed = 0.7
+gold_cost = 25
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ghxie")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_pueuq")
+volume_db = -6.0
+bus = &"SFX"
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 256
+collision_mask = 128
+script = ExtResource("4_yyv0j")
+damage_stats = ExtResource("5_qa3w0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(3, 2)
+shape = SubResource("RectangleShape2D_7068w")

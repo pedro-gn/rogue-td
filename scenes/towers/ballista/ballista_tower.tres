@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Tower" load_steps=4 format=3 uid="uid://t4r1poxnvx3"]
+
+[ext_resource type="Script" path="res://resources/towers/tower.gd" id="1_abjra"]
+[ext_resource type="Resource" uid="uid://jmjlwd34q41w" path="res://scenes/towers/ballista/ballista_tower_info.tres" id="2_tyfou"]
+[ext_resource type="PackedScene" uid="uid://me5uqg2wrp8v" path="res://scenes/towers/ballista/ballista.tscn" id="3_ni2cd"]
+
+[resource]
+script = ExtResource("1_abjra")
+tower_info = ExtResource("2_tyfou")
+tower_scene = ExtResource("3_ni2cd")

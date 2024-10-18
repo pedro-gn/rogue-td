@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://bmx0gv211eixf"]
+
+[ext_resource type="Texture2D" uid="uid://ck7qnlfirevi0" path="res://scenes/weapom_rack/weapon_rack.png" id="1_cc3nv"]
+[ext_resource type="Script" path="res://scenes/weapom_rack/weapom_rack.gd" id="1_gs300"]
+[ext_resource type="PackedScene" uid="uid://bfu8kocw7pmd8" path="res://scenes/interact_area/interact_area.tscn" id="2_1gusy"]
+[ext_resource type="Theme" uid="uid://ce5wghpko8olj" path="res://rogue_main_theme.tres" id="4_v7mum"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xbldh"]
+size = Vector2(39, 29)
+
+[node name="WeapomRack" type="Node2D" node_paths=PackedStringArray("weapons_shop_list")]
+script = ExtResource("1_gs300")
+weapons_shop_list = NodePath("CanvasLayer/CenterContainer")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_cc3nv")
+
+[node name="InteractArea" parent="." instance=ExtResource("2_1gusy")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(-0.5, 0.5)
+shape = SubResource("RectangleShape2D_xbldh")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="WeaponsShopList" type="PanelContainer" parent="CanvasLayer/CenterContainer"]
+custom_minimum_size = Vector2(300, 184.08)
+layout_mode = 2
+theme = ExtResource("4_v7mum")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CenterContainer/WeaponsShopList"]
+layout_mode = 2
+
+[node name="WeapomGridContainer" type="GridContainer" parent="CanvasLayer/CenterContainer/WeaponsShopList/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+theme = ExtResource("4_v7mum")
+columns = 5
+
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="interacted" from="InteractArea" to="." method="_on_interact_area_interacted"]

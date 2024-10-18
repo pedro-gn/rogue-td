@@ -1,0 +1,38 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://ce5wghpko8olj"]
+
+[ext_resource type="Texture2D" uid="uid://cftruftug6vha" path="res://common/UI/frame.png" id="1_3r635"]
+[ext_resource type="FontFile" uid="uid://pe6yotwup6or" path="res://fonts/PixelifySans-VariableFont_wght.ttf" id="2_0n6sk"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e378w"]
+texture = ExtResource("1_3r635")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vokki"]
+texture = ExtResource("1_3r635")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ykq1a"]
+texture = ExtResource("1_3r635")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+
+[resource]
+default_font = ExtResource("2_0n6sk")
+GridContainer/constants/h_separation = 4
+GridContainer/constants/v_separation = 4
+GridContainer/styles/Patch = SubResource("StyleBoxTexture_e378w")
+MarginContainer/constants/margin_bottom = 0
+MarginContainer/constants/margin_left = 0
+MarginContainer/constants/margin_right = 0
+MarginContainer/constants/margin_top = 0
+Panel/styles/panel = SubResource("StyleBoxTexture_vokki")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_ykq1a")
+RichTextLabel/colors/default_color = Color(0.92549, 0.92549, 0.92549, 1)

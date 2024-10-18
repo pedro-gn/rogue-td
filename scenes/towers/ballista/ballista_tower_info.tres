@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TowerInfo" load_steps=4 format=3 uid="uid://jmjlwd34q41w"]
+
+[ext_resource type="Resource" uid="uid://83gycqeablqr" path="res://scenes/towers/ballista/projectile/ballista_arrow_projectile.tres" id="1_5u5cb"]
+[ext_resource type="Script" path="res://resources/towers/tower_info.gd" id="1_k0sdx"]
+[ext_resource type="Texture2D" uid="uid://cekm2so3d8bbc" path="res://scenes/towers/ballista/ballista_thumb.png" id="2_6d4ho"]
+
+[resource]
+script = ExtResource("1_k0sdx")
+tower_name = "ballista"
+tower_thumb = ExtResource("2_6d4ho")
+gold_cost = 100
+fire_rate = 1.0
+projectile = ExtResource("1_5u5cb")

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://5ckihxeuqbth"]
+
+[ext_resource type="Script" path="res://scenes/globals/towers_database/towers_database.gd" id="1_ck1sg"]
+
+[node name="TowersDatabase" type="Node2D"]
+script = ExtResource("1_ck1sg")
+towers_folder = "res://scenes/towers"

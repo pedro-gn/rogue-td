@@ -1,0 +1,75 @@
+[gd_scene load_steps=7 format=3 uid="uid://djink1sg3wsjt"]
+
+[ext_resource type="Texture2D" uid="uid://cfc20vkttygku" path="res://common/UI/weapom_frame.png" id="1_ce1wh"]
+[ext_resource type="Script" path="res://scenes/weapom_shop/UI/weapom_frame.gd" id="2_x8gbv"]
+[ext_resource type="Texture2D" uid="uid://dxsh5ectk76ba" path="res://scenes/weapons/melee/axe/axe.png" id="2_ynef6"]
+[ext_resource type="Texture2D" uid="uid://d2uevquos2lm2" path="res://common/UI/weapom_frame_hover.png" id="3_bsgu7"]
+[ext_resource type="Theme" uid="uid://ce5wghpko8olj" path="res://rogue_main_theme.tres" id="3_mkvrb"]
+[ext_resource type="Texture2D" uid="uid://cs72hjlkvegm2" path="res://items/gold/gold.png" id="4_q757a"]
+
+[node name="TextureRect2" type="TextureRect" node_paths=PackedStringArray("rich_text_label", "texture_rect")]
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("1_ce1wh")
+script = ExtResource("2_x8gbv")
+normal_texture = ExtResource("1_ce1wh")
+mouse_hover_texture = ExtResource("3_bsgu7")
+rich_text_label = NodePath("VBoxContainer/MarginContainer2/CenterContainer/HBoxContainer/RichTextLabel")
+texture_rect = NodePath("VBoxContainer/MarginContainer/TextureRect")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 38.995)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ynef6")
+stretch_mode = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/MarginContainer2/CenterContainer/HBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(18.145, 10.115)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme = ExtResource("3_mkvrb")
+theme_override_font_sizes/normal_font_size = 10
+text = "123"
+scroll_active = false
+autowrap_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer2/CenterContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_q757a")
+expand_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ktkmmewaajj3"]
+
+[ext_resource type="Script" path="res://scenes/globals/WeaponsDatabase/weapons_database.gd" id="1_fa08f"]
+
+[node name="WeaponsDatabase" type="Node2D"]
+script = ExtResource("1_fa08f")
+weapons_folder = "res://scenes/weapons"

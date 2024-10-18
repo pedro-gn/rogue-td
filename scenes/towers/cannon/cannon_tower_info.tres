@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TowerInfo" load_steps=4 format=3 uid="uid://dyec56hv0wvl6"]
+
+[ext_resource type="Resource" uid="uid://d2iokk14uwo6m" path="res://scenes/towers/cannon/cannon_ball/cannon_ball_projectile.tres" id="1_o8hmd"]
+[ext_resource type="Script" path="res://resources/towers/tower_info.gd" id="2_eeajv"]
+[ext_resource type="Texture2D" uid="uid://y0q55qdpn5he" path="res://scenes/towers/cannon/sprites/cannon_thumb.png" id="3_q8jfi"]
+
+[resource]
+script = ExtResource("2_eeajv")
+tower_name = "cannon"
+tower_thumb = ExtResource("3_q8jfi")
+gold_cost = 20
+fire_rate = 0.5
+projectile = ExtResource("1_o8hmd")

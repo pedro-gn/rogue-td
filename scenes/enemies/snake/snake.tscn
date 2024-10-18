@@ -1,0 +1,281 @@
+[gd_scene load_steps=36 format=3 uid="uid://cqyptwg5ch6hl"]
+
+[ext_resource type="Script" path="res://scenes/enemies/enemy_base/enemy_base_script.gd" id="1_4agrc"]
+[ext_resource type="Script" path="res://common/state_machine/state_machine.gd" id="1_4jupd"]
+[ext_resource type="Script" path="res://common/health_system.gd" id="1_6gmtf"]
+[ext_resource type="Texture2D" uid="uid://c1g5x27b44558" path="res://scenes/enemies/snake/snake.png" id="1_lf1wb"]
+[ext_resource type="Script" path="res://common/hurtbox.gd" id="1_nyjgu"]
+[ext_resource type="Script" path="res://common/sprite_flipper.gd" id="1_v85c0"]
+[ext_resource type="Script" path="res://scenes/enemies/snake/state_machine/snake_idle_state.gd" id="2_hv75w"]
+[ext_resource type="AudioStream" uid="uid://d4tfs5jotsah" path="res://common/SFX/die.wav" id="2_ks0sw"]
+[ext_resource type="Resource" uid="uid://l6huhpbctwuv" path="res://scenes/enemies/snake/snake_health_stats.tres" id="2_wn3m6"]
+[ext_resource type="Shader" path="res://shaders/hit_flash.gdshader" id="4_xr1w0"]
+[ext_resource type="Script" path="res://scenes/enemies/snake/state_machine/snake_follow_state.gd" id="5_g8ftb"]
+[ext_resource type="Script" path="res://common/state_machine/hit_state.gd" id="9_m4ywf"]
+[ext_resource type="Script" path="res://common/hitbox.gd" id="10_2wyfn"]
+[ext_resource type="Script" path="res://common/hit_system.gd" id="10_apr2d"]
+[ext_resource type="Script" path="res://common/state_machine/die_state.gd" id="11_ngsqk"]
+[ext_resource type="Resource" uid="uid://ccng863mex3ga" path="res://scenes/enemies/snake/snake_damage_stats.tres" id="11_vc1pk"]
+[ext_resource type="PackedScene" uid="uid://d025kx0gsvnbp" path="res://scenes/common/hit_audio_player/hit_audio_player.tscn" id="13_3dvw1"]
+[ext_resource type="Script" path="res://common/drop_system.gd" id="18_tvyoq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_602sh"]
+size = Vector2(11, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vmdxq"]
+size = Vector2(11, 14)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yirpv"]
+resource_local_to_scene = true
+shader = ExtResource("4_xr1w0")
+shader_parameter/active = false
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5hjv"]
+size = Vector2(1663.5, 249.5)
+
+[sub_resource type="Animation" id="Animation_5ulch"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_0cxcs"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y21hb"]
+_data = {
+"RESET": SubResource("Animation_5ulch"),
+"hit_flash": SubResource("Animation_0cxcs")
+}
+
+[sub_resource type="Animation" id="Animation_x46jp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_it2i0"]
+resource_name = "idle"
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_45j46"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jjwso"]
+_data = {
+"RESET": SubResource("Animation_x46jp"),
+"idle": SubResource("Animation_it2i0"),
+"walk": SubResource("Animation_45j46")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ux26h"]
+size = Vector2(16, 14)
+
+[sub_resource type="Curve" id="Curve_fym6x"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0.00666666, 360), 0.0, 0.0, 0, 0, Vector2(1, -360), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7kwae"]
+curve = SubResource("Curve_fym6x")
+
+[sub_resource type="Curve" id="Curve_hw33q"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qx8vu"]
+curve = SubResource("Curve_hw33q")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_es2sa"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(5, 5, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 180.0
+flatness = 0.315
+initial_velocity_max = 60.86
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("CurveTexture_7kwae")
+gravity = Vector3(0, 0, 0)
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_qx8vu")
+
+[node name="Snake" type="CharacterBody2D" node_paths=PackedStringArray("hurtbox", "health_system", "hit_system", "state_machine", "drop_system")]
+collision_layer = 32
+script = ExtResource("1_4agrc")
+hurtbox = NodePath("HurtBox")
+health_system = NodePath("HealthSystem")
+hit_system = NodePath("HitSystem")
+state_machine = NodePath("StateMachine")
+drop_system = NodePath("DropSystem")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, 9)
+shape = SubResource("RectangleShape2D_602sh")
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 256
+script = ExtResource("1_nyjgu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(1.5, 9)
+shape = SubResource("RectangleShape2D_vmdxq")
+
+[node name="SpriteFlipper" type="Marker2D" parent="." node_paths=PackedStringArray("character_body")]
+script = ExtResource("1_v85c0")
+character_body = NodePath("..")
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteFlipper"]
+material = SubResource("ShaderMaterial_yirpv")
+texture = ExtResource("1_lf1wb")
+hframes = 4
+
+[node name="DieAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_ks0sw")
+max_polyphony = 4
+bus = &"SFX"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "debug_label")]
+script = ExtResource("1_4jupd")
+initial_state = NodePath("IdleState")
+debug_label = NodePath("../Label")
+
+[node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("2_hv75w")
+enemy = NodePath("../..")
+stop_speed = 2.0
+
+[node name="FollowState" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("5_g8ftb")
+enemy = NodePath("../..")
+max_follow_speed = 60.0
+
+[node name="HitState" type="Node" parent="StateMachine" node_paths=PackedStringArray("default_state")]
+script = ExtResource("9_m4ywf")
+stop_speed = 2.0
+default_state = NodePath("../IdleState")
+
+[node name="DieState" type="Node" parent="StateMachine" node_paths=PackedStringArray("hurt_box", "hit_box", "die_particles")]
+script = ExtResource("11_ngsqk")
+hurt_box = NodePath("../../HurtBox")
+hit_box = NodePath("../../HitBox")
+die_particles = NodePath("../../DieParticles2D")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_v5hjv")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = -46.0
+offset_top = -26.0
+offset_right = 46.0
+offset_bottom = -3.0
+text = "DebugLabel"
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_y21hb")
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_jjwso")
+}
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 1536
+script = ExtResource("10_2wyfn")
+damage_stats = ExtResource("11_vc1pk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, 9)
+shape = SubResource("RectangleShape2D_ux26h")
+
+[node name="HitAudioPlayer" parent="." instance=ExtResource("13_3dvw1")]
+
+[node name="HitSystem" type="Node" parent="." node_paths=PackedStringArray("hit_flash_animation_player", "hit_audio_stream_player")]
+script = ExtResource("10_apr2d")
+hit_flash_animation_player = NodePath("../HitFlashAnimationPlayer")
+hit_audio_stream_player = NodePath("../HitAudioPlayer")
+
+[node name="HealthSystem" type="Node" parent="."]
+script = ExtResource("1_6gmtf")
+health_stats = ExtResource("2_wn3m6")
+
+[node name="DieParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, 7)
+emitting = false
+amount = 26
+process_material = SubResource("ParticleProcessMaterial_es2sa")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+
+[node name="DropSystem" type="Node" parent="."]
+script = ExtResource("18_tvyoq")

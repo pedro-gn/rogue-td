@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Projectile" load_steps=4 format=3 uid="uid://dntak3sik2ury"]
+
+[ext_resource type="Resource" uid="uid://dmx8uxygp8k2t" path="res://scenes/weapons/ranged/wood_bow/arrow/arrow_damage_stats.tres" id="1_0je8u"]
+[ext_resource type="Script" path="res://resources/projectile.gd" id="1_d10qe"]
+[ext_resource type="PackedScene" uid="uid://dg4gokswpu36" path="res://scenes/weapons/ranged/wood_bow/arrow/arrow.tscn" id="2_cirrp"]
+
+[resource]
+script = ExtResource("1_d10qe")
+projectile_fly_speed = 700.0
+projectile_scene = ExtResource("2_cirrp")
+projectile_damage_stats = ExtResource("1_0je8u")

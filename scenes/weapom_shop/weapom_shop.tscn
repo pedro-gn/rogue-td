@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=3 uid="uid://bp3xf28uoe3h1"]
+
+[ext_resource type="Texture2D" uid="uid://j0el0fsa1bek" path="res://scenes/weapom_shop/weapon_shop-Sheet.png" id="1_7fk1t"]
+[ext_resource type="Script" path="res://scenes/weapom_shop/weapom_shop.gd" id="1_hb3rj"]
+[ext_resource type="PackedScene" uid="uid://bfu8kocw7pmd8" path="res://scenes/interact_area/interact_area.tscn" id="2_hgg4b"]
+[ext_resource type="Theme" uid="uid://ce5wghpko8olj" path="res://rogue_main_theme.tres" id="4_gq3ul"]
+
+[sub_resource type="Animation" id="Animation_b7q8k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_dktcr"]
+resource_name = "idle"
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7w1s4"]
+_data = {
+"RESET": SubResource("Animation_b7q8k"),
+"idle": SubResource("Animation_dktcr")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1jnfk"]
+size = Vector2(83, 41)
+
+[node name="WeapomShop" type="Node2D" node_paths=PackedStringArray("weapons_shop_list")]
+script = ExtResource("1_hb3rj")
+weapons_shop_list = NodePath("CanvasLayer/WeaponsShopList")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -44)
+texture = ExtResource("1_7fk1t")
+hframes = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_7w1s4")
+}
+autoplay = "idle"
+
+[node name="InteractArea" parent="." instance=ExtResource("2_hgg4b")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0.5, -20.5)
+shape = SubResource("RectangleShape2D_1jnfk")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="WeaponsShopList" type="PanelContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = -1
+anchor_right = 0.194
+anchor_bottom = 0.324
+offset_left = 183.0
+offset_top = 71.0
+offset_right = 210.512
+offset_bottom = 9.048
+theme = ExtResource("4_gq3ul")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/WeaponsShopList"]
+layout_mode = 2
+
+[node name="WeapomGridContainer" type="GridContainer" parent="CanvasLayer/WeaponsShopList/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+theme = ExtResource("4_gq3ul")
+columns = 5
+
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="interacted" from="InteractArea" to="." method="_on_interact_area_interacted"]

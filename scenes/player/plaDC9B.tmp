@@ -1,0 +1,291 @@
+[gd_scene load_steps=24 format=3 uid="uid://bhgx4y0shwsk0"]
+
+[ext_resource type="Texture2D" uid="uid://b0sasiyvd0yjb" path="res://scenes/player/player-Sheet.png" id="1_gos3f"]
+[ext_resource type="Script" path="res://common/state_machine/state_machine.gd" id="2_p88nr"]
+[ext_resource type="Script" path="res://scenes/player/state_machine/idle_state.gd" id="3_he8yt"]
+[ext_resource type="Script" path="res://scenes/player/state_machine/walk_state.gd" id="4_wg5m1"]
+[ext_resource type="Script" path="res://scenes/player/state_machine/jump_state.gd" id="5_mdjhm"]
+[ext_resource type="Script" path="res://scenes/player/state_machine/fall_state.gd" id="6_lvw17"]
+[ext_resource type="Script" path="res://scenes/player/state_machine/land_state.gd" id="7_hygq8"]
+[ext_resource type="Script" path="res://common/sprite_flipper.gd" id="8_81pmy"]
+[ext_resource type="Script" path="res://scenes/player/weapon_system.gd" id="10_fowds"]
+[ext_resource type="Script" path="res://scenes/player/platform_fall.gd" id="11_vg4do"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0r4in"]
+size = Vector2(14.5, 23)
+
+[sub_resource type="Animation" id="Animation_qgsb5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_mdwlp"]
+resource_name = "attack"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [30, 31, 32]
+}
+
+[sub_resource type="Animation" id="Animation_xruql"]
+resource_name = "fall"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [15]
+}
+
+[sub_resource type="Animation" id="Animation_xrmj2"]
+resource_name = "idle"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ifdgv"]
+resource_name = "jump"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [5, 10]
+}
+
+[sub_resource type="Animation" id="Animation_d1qx7"]
+resource_name = "land"
+length = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [20]
+}
+
+[sub_resource type="Animation" id="Animation_71xjv"]
+resource_name = "run"
+length = 0.75
+loop_mode = 1
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [35, 36, 37, 38, 39]
+}
+
+[sub_resource type="Animation" id="Animation_g15wn"]
+resource_name = "walk"
+length = 0.55
+loop_mode = 1
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpriteFlipper/HandSlot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(7, 5), Vector2(6, 3), Vector2(7, 5), Vector2(8, 4)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ccrmi"]
+_data = {
+"RESET": SubResource("Animation_qgsb5"),
+"attack": SubResource("Animation_mdwlp"),
+"fall": SubResource("Animation_xruql"),
+"idle": SubResource("Animation_xrmj2"),
+"jump": SubResource("Animation_ifdgv"),
+"land": SubResource("Animation_d1qx7"),
+"run": SubResource("Animation_71xjv"),
+"walk": SubResource("Animation_g15wn")
+}
+
+[sub_resource type="Animation" id="Animation_4mo17"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/HandSlot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_s7117"]
+resource_name = "swing"
+length = 0.3
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteFlipper/HandSlot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.175, 0.275),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.488692, 2.96706, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fkbb5"]
+_data = {
+"RESET": SubResource("Animation_4mo17"),
+"swing": SubResource("Animation_s7117")
+}
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4.5)
+shape = SubResource("RectangleShape2D_0r4in")
+one_way_collision_margin = 2.0
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "debug_label")]
+script = ExtResource("2_p88nr")
+initial_state = NodePath("Idle")
+debug_label = NodePath("../Label")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("3_he8yt")
+stop_speed = 2.0
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("4_wg5m1")
+speed = 100.0
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("5_mdjhm")
+jump_velocity = -400.0
+coyot_time = 0.2
+air_move_speed = 100.0
+
+[node name="Fall" type="Node" parent="StateMachine"]
+script = ExtResource("6_lvw17")
+air_move_speed = 100.0
+jump_buffer_time = 0.2
+
+[node name="Land" type="Node" parent="StateMachine"]
+script = ExtResource("7_hygq8")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ccrmi")
+}
+
+[node name="AttackAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_fkbb5")
+}
+
+[node name="Label" type="Label" parent="."]
+offset_left = -18.0
+offset_top = -33.0
+offset_right = 22.0
+offset_bottom = -10.0
+text = "State"
+
+[node name="SpriteFlipper" type="Marker2D" parent="." node_paths=PackedStringArray("character_body")]
+position = Vector2(0, 6)
+script = ExtResource("8_81pmy")
+character_body = NodePath("..")
+
+[node name="HandSlot" type="Node2D" parent="SpriteFlipper"]
+position = Vector2(7, 5)
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteFlipper"]
+z_index = 20
+z_as_relative = false
+position = Vector2(0, -6)
+texture = ExtResource("1_gos3f")
+hframes = 5
+vframes = 8
+
+[node name="PlatformFall" type="Node2D" parent="."]
+script = ExtResource("11_vg4do")
+
+[node name="RayCast2D" type="RayCast2D" parent="PlatformFall"]
+position = Vector2(0, 2)
+target_position = Vector2(0, 19)
+collision_mask = 3
+
+[node name="WeaponSystem" type="Node2D" parent="."]
+z_index = 19
+position = Vector2(12, -1)
+script = ExtResource("10_fowds")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="StateMachine/Land" method="_on_animation_player_animation_finished"]

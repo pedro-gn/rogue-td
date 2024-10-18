@@ -1,0 +1,125 @@
+[gd_scene load_steps=18 format=3 uid="uid://c3wpla004k5tj"]
+
+[ext_resource type="Script" path="res://common/hurtbox.gd" id="1_m3ryy"]
+[ext_resource type="Script" path="res://scenes/castle/castle.gd" id="1_u2cyh"]
+[ext_resource type="Script" path="res://common/health_system.gd" id="2_4dn6r"]
+[ext_resource type="Texture2D" uid="uid://d0jkanthyspy6" path="res://scenes/castle/castle-Sheet.png" id="2_gmuaq"]
+[ext_resource type="Script" path="res://resources/health_stats.gd" id="3_u2mjo"]
+[ext_resource type="Texture2D" uid="uid://0crh1oulgyp0" path="res://scenes/castle/big_wall.png" id="4_6mcgh"]
+[ext_resource type="PackedScene" uid="uid://bmx0gv211eixf" path="res://scenes/weapom_rack/weapom_rack.tscn" id="5_ngglk"]
+[ext_resource type="PackedScene" uid="uid://1odlfw0qpugf" path="res://scenes/castle_tower/castle_tower.tscn" id="6_10w24"]
+[ext_resource type="PackedScene" uid="uid://bp3xf28uoe3h1" path="res://scenes/weapom_shop/weapom_shop.tscn" id="6_g885c"]
+[ext_resource type="Texture2D" uid="uid://cqt8a7weqndj1" path="res://common/UI/fill_bar.png" id="10_e7pfn"]
+[ext_resource type="Texture2D" uid="uid://cbro5cp6ux85f" path="res://common/UI/fill_bar_fill.png" id="11_3n1cu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bc8iu"]
+size = Vector2(130, 68)
+
+[sub_resource type="Resource" id="Resource_l68pk"]
+script = ExtResource("3_u2mjo")
+max_health = 1000.0
+
+[sub_resource type="Animation" id="Animation_sygmj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Castle:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_juwm0"]
+resource_name = "idle"
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Castle:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8h43b"]
+_data = {
+"RESET": SubResource("Animation_sygmj"),
+"idle": SubResource("Animation_juwm0")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6m87g"]
+size = Vector2(122, 69)
+
+[node name="Castle" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_u2cyh")
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 64
+script = ExtResource("1_m3ryy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_bc8iu")
+
+[node name="HealthSystem" type="Node" parent="." node_paths=PackedStringArray("health_bar")]
+script = ExtResource("2_4dn6r")
+health_stats = SubResource("Resource_l68pk")
+health_bar = NodePath("../HealthBar")
+
+[node name="Castle" type="Sprite2D" parent="."]
+texture = ExtResource("2_gmuaq")
+hframes = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8h43b")
+}
+autoplay = "idle"
+
+[node name="RightWall" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(140, 15)
+texture = ExtResource("4_6mcgh")
+
+[node name="LeftWall" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-141, 15)
+texture = ExtResource("4_6mcgh")
+
+[node name="WeapomRack" parent="." instance=ExtResource("5_ngglk")]
+position = Vector2(-92, 22)
+
+[node name="WeapomShop" parent="." instance=ExtResource("6_g885c")]
+position = Vector2(-167, 38)
+
+[node name="CastleTower2" parent="." instance=ExtResource("6_10w24")]
+position = Vector2(232, 38)
+
+[node name="CastleTower" parent="." instance=ExtResource("6_10w24")]
+position = Vector2(-232, 38)
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -26.0
+offset_top = -55.0
+offset_right = 74.0
+offset_bottom = -35.0
+scale = Vector2(0.5, 0.5)
+texture_under = ExtResource("10_e7pfn")
+texture_progress = ExtResource("11_3n1cu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3.5)
+shape = SubResource("RectangleShape2D_6m87g")
